@@ -1,0 +1,25 @@
+{
+    "name": "profiler",
+    "version": "1.0.0",
+    "description": "A console application to generate an styled team profile page for a development team, based on input.",
+    "main": "index.js",
+    "scripts": {
+        "test": "jest"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/Proto133/Profiler.git"
+    },
+    "author": "Peter Roto",
+    "license": "BSD-3-Clause",
+    "bugs": {
+        "url": "https://github.com/Proto133/Profiler/issues"
+    },
+    "homepage": "https://github.com/Proto133/Profiler#readme",
+    "dependencies": {
+        "inquirer": "^8.1.0"
+    },
+    "devDependencies": {
+        "jest": "^27.0.4"
+    }
+}
