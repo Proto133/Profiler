@@ -172,7 +172,6 @@ function addHtml(member, teamName) {
         const id = member.id;
         const email = member.email;
         const picture = member.profilePicture;
-        const origin = process.cwd();
         let data = "";
         if (role === "Engineer") {
             const github = member.github;
@@ -197,7 +196,6 @@ function addHtml(member, teamName) {
             </div>`;
         } else if (role === "Intern") {
             const school = member.school;
-            console.log('school=', school);
             data = ` <div class="card profile">
             <div class=" propic card-image waves-effect waves-block waves-light">
               <img class="activator" src="${picture}">
