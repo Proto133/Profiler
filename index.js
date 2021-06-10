@@ -12,6 +12,8 @@ const Manager = require('./lib/Manager')
 //Employees Array
 const employees = []
 
+var teamNameGlobal = ''
+
 function init() {
     confirmStart();
 }
@@ -43,6 +45,7 @@ function confirmStart() {
                 mkOutput();
                 startHtml(response.teamName);
                 addMember(response.teamName);
+                teamNameGlobal = response.teamName
             })
         }
     })
@@ -56,7 +59,7 @@ function addMember(teamName) {
             },
             {
                 type: 'input',
-                message: "Enter the relative path to profile picture (random placholder will be added by default)",
+                message: "Enter a URL to a profile picture of this member (random placholder will be added by default):",
                 name: "profilePicture"
             },
             {
@@ -80,7 +83,7 @@ function addMember(teamName) {
                 name: "email"
             }
         ])
-        .then(function({ name, role, id, email }) {
+        .then(function({ profilePicture, name, role, id, email }) {
             let roleInfo = "";
             if (role === "Engineer") {
                 roleInfo = "GitHub username";
@@ -106,18 +109,18 @@ function addMember(teamName) {
                 .then(function({ roleInfo, moreMembers }) {
                     let newMember;
                     if (role === "Engineer") {
-                        newMember = new Engineer(role, name, id, email, roleInfo);
+                        newMember = new Engineer(profilePicture, role, name, id, email, roleInfo);
                     } else if (role === "Intern") {
-                        newMember = new Intern(role, name, id, email, roleInfo);
+                        newMember = new Intern(profilePicture, role, name, id, email, roleInfo);
                     } else {
-                        newMember = new Manager(role, name, id, email, roleInfo);
+                        newMember = new Manager(profilePicture, role, name, id, email, roleInfo);
                     }
                     console.log(newMember);
                     employees.push(newMember);
                     addHtml(newMember, teamName)
                         .then(function() {
                             if (moreMembers === "yes") {
-                                addMember();
+                                addMember(teamNameGlobal);
                             } else {
                                 finishHtml();
                             }
@@ -141,9 +144,11 @@ function startHtml(teamName) {
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
         <title> Meet ${teamName}</title>
         <style>
-        main{display:flex; flex-direction: row; flex-wrap:wrap; justify-content: space-evenly;}
-        header{background-color:#76008e; position: fixed; top: 0;}
-        h1{text-align:center;font-family:Helvetica, sans-serif;font-variant:small-caps;color:#ffffff;}
+        main{display:flex; flex-direction: row; flex-wrap:wrap; justify-content: space-evenly;background-color: rgb(136, 136, 136)}
+        header{background-color:#76008e; min-height:75px; top: 0;}
+        h1{text-align:center;font-family:Helvetica, sans-serif;font-variant:small-caps;color:#ffffff;}  
+        .profile{flex: 0 1 30%; margin: 2.5% 5%}
+        .propic{padding:0 10%}
         </style>
     </head>
     <body>
@@ -162,20 +167,19 @@ function startHtml(teamName) {
 
 function addHtml(member, teamName) {
     return new Promise(function(resolve, reject) {
-        console.log('member = ', member)
-        console.log('TeamName=', teamName)
         const name = member.name;
         const role = member.role;
         const id = member.id;
         const email = member.email;
+        const picture = member.profilePicture;
+        const origin = process.cwd();
         let data = "";
-        console.log('role =', role)
         if (role === "Engineer") {
-            const github = Engineer.github;
+            const github = member.github;
             data = `
-            <div class="card">
-              <div class="card-image waves-effect waves-block waves-light">
-                <img class="activator" src="">
+            <div class="card profile">
+              <div class="propic card-image waves-effect waves-block waves-light">
+                <img class="activator" src="${picture}">
               </div>
               <div class="card-content">
                 <span class="card-title activator grey-text text-darken-4">${name}<i class="material-icons right">more_vert</i></span>
@@ -184,18 +188,19 @@ function addHtml(member, teamName) {
                 <span class="card-title grey-text text-darken-4">${teamName} : Engineer<i class="material-icons right">close</i></span>
                 <ul class="collection with-header">
                 <li class="collection-header"><h4>${name}</h4></li>
-                <li class="collection-item">Role: Engineer </li>
+                <li class="collection-item">Role: ${role} </li>
                 <li class="collection-item">ID: ${id}</li>
-                <li class="collection-item">Email Address: ${email}</li>
-                <li class="collection-item">Github: ${github}</li>
+                <li class="collection-item">Email Address: <a href="mailto:${email}" target="_blank">${email}</a></li>
+                <li class="collection-item">Github: <a href="https://github.com/${github}" target="_blank">${github}</a></li>
               </ul>
               </div>
             </div>`;
         } else if (role === "Intern") {
-            const school = Intern.school;
-            data = ` <div class="card">
-            <div class="card-image waves-effect waves-block waves-light">
-              <img class="activator" src="images/office.jpg">
+            const school = member.school;
+            console.log('school=', school);
+            data = ` <div class="card profile">
+            <div class=" propic card-image waves-effect waves-block waves-light">
+              <img class="activator" src="${picture}">
             </div>
             <div class="card-content">
               <span class="card-title activator grey-text text-darken-4">${name}<i class="material-icons right">more_vert</i></span>
@@ -204,18 +209,19 @@ function addHtml(member, teamName) {
               <span class="card-title grey-text text-darken-4">${teamName}'s ${role}<i class="material-icons right">close</i></span>
               <ul class="collection with-header">
               <li class="collection-header"><h4>${name}</h4></li>
-              <li class="collection-item">Role: Itern </li>
+              <li class="collection-item">Role: ${role} </li>
               <li class="collection-item">ID: ${id}</li>
-              <li class="collection-item">Email Address: ${email}</li>
-              <li class="collection-item">School: ${school}</li>{github}</li>
+              <li class="collection-item">Email Address: <a href="mailto:${email}" target="_blank">${email}</a></li>
+              <li class="collection-item">School: ${school}</li>
             </ul>
             </div>
           </div>`;
         } else {
-            const officePhone = Manager.officeNumber;
-            data = `  <div class="card">
-            <div class="card-image waves-effect waves-block waves-light">
-              <img class="activator" src="images/office.jpg">
+            const officePhone = member.officeNumber;
+            console.log('officePhone=', officePhone)
+            data = `  <div class="card profile">
+            <div class="propic card-image waves-effect waves-block waves-light">
+              <img class="activator" src="${picture}">
             </div>
             <div class="card-content">
               <span class="card-title activator grey-text text-darken-4">${name}<i class="material-icons right">more_vert</i></span>
@@ -224,10 +230,10 @@ function addHtml(member, teamName) {
               <span class="card-title grey-text text-darken-4">${teamName}'s ${role}<i class="material-icons right">close</i></span>
               <ul class="collection with-header">
               <li class="collection-header"><h4>${name}</h4></li>
-              <li class="collection-item">Role: Engineer </li>
+              <li class="collection-item">Role: ${role} </li>
               <li class="collection-item">ID: ${id}</li>
-              <li class="collection-item">Email Address: ${email}</li>
-              <li class="collection-item">Office Number: ${officePhone}</li>
+              <li class="collection-item">Email Address: <a href="mailto:${email}" target="_blank">${email}</a></li>
+              <li class="collection-item">Office Number:<a href="tel:${officePhone}" target="_blank">${officePhone}</a></li>
             </ul>
             </div>
           </div> `
