@@ -117,6 +117,7 @@ function addMember(teamName) {
                     }
                     console.log(newMember);
                     employees.push(newMember);
+                    console.log(newMember)
                     addHtml(newMember, teamName)
                         .then(function() {
                             if (moreMembers === "yes") {
@@ -128,6 +129,7 @@ function addMember(teamName) {
 
                 });
         });
+
 }
 
 function startHtml(teamName) {
@@ -187,10 +189,10 @@ function addHtml(member, teamName) {
                 <span class="card-title grey-text text-darken-4">${teamName} : Engineer<i class="material-icons right">close</i></span>
                 <ul class="collection with-header">
                 <li class="collection-header"><h4>${name}</h4></li>
-                <li class="collection-item">Role: ${role} </li>
-                <li class="collection-item">ID: ${id}</li>
-                <li class="collection-item">Email Address: <a href="mailto:${email}" target="_blank">${email}</a></li>
-                <li class="collection-item">Github: <a href="https://github.com/${github}" target="_blank">${github}</a></li>
+                <li class="collection-item"><bold>Role:</bold><br>  ${role} </li>
+                <li class="collection-item"><bold>ID:</bold><br>  ${id}</li>
+                <li class="collection-item"><bold>Email Address:</bold><br>  <a href="mailto:${email}" target="_blank">${email}</a></li>
+                <li class="collection-item"><bold>Github:</bold><br>  <a href="https://github.com/${github}" target="_blank">${github}</a></li>
               </ul>
               </div>
             </div>`;
@@ -207,10 +209,10 @@ function addHtml(member, teamName) {
               <span class="card-title grey-text text-darken-4">${teamName}'s ${role}<i class="material-icons right">close</i></span>
               <ul class="collection with-header">
               <li class="collection-header"><h4>${name}</h4></li>
-              <li class="collection-item">Role: ${role} </li>
-              <li class="collection-item">ID: ${id}</li>
-              <li class="collection-item">Email Address: <a href="mailto:${email}" target="_blank">${email}</a></li>
-              <li class="collection-item">School: ${school}</li>
+              <li class="collection-item"><bold>Role:</bold><br>  ${role} </li>
+              <li class="collection-item"><bold>ID:</bold><br>  ${id}</li>
+              <li class="collection-item"><bold>Email Address:</bold><br>  <a href="mailto:${email}" target="_blank">${email}</a></li>
+              <li class="collection-item"><bold>School:</bold><br>  ${school}</li>
             </ul>
             </div>
           </div>`;
@@ -228,10 +230,10 @@ function addHtml(member, teamName) {
               <span class="card-title grey-text text-darken-4">${teamName}'s ${role}<i class="material-icons right">close</i></span>
               <ul class="collection with-header">
               <li class="collection-header"><h4>${name}</h4></li>
-              <li class="collection-item">Role: ${role} </li>
-              <li class="collection-item">ID: ${id}</li>
-              <li class="collection-item">Email Address: <a href="mailto:${email}" target="_blank">${email}</a></li>
-              <li class="collection-item">Office Number:<a href="tel:${officePhone}" target="_blank">${officePhone}</a></li>
+              <li class="collection-item"><bold>Role:</bold><br> ${role} </li>
+              <li class="collection-item"><bold>ID:</bold> <br> ${id}</li>
+              <li class="collection-item"><bold>Email Address:</bold><br> <a href="mailto:${email}" target="_blank">${email}</a></li>
+              <li class="collection-item"><bold>Office Number:</bold><br> <a href="tel:${officePhone}" target="_blank">${officePhone}</a></li>
             </ul>
             </div>
           </div> `
