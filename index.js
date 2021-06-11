@@ -109,13 +109,12 @@ function addMember(teamName) {
                 .then(function({ roleInfo, moreMembers }) {
                     let newMember;
                     if (role === "Engineer") {
-                        newMember = new Engineer(profilePicture, role, name, id, email, roleInfo);
+                        newMember = new Engineer(profilePicture, name, id, email, roleInfo);
                     } else if (role === "Intern") {
-                        newMember = new Intern(profilePicture, role, name, id, email, roleInfo);
+                        newMember = new Intern(profilePicture, name, id, email, roleInfo);
                     } else {
-                        newMember = new Manager(profilePicture, role, name, id, email, roleInfo);
+                        newMember = new Manager(profilePicture, name, id, email, roleInfo);
                     }
-                    console.log(newMember);
                     employees.push(newMember);
                     console.log(newMember)
                     addHtml(newMember, teamName)
@@ -169,14 +168,14 @@ function startHtml(teamName) {
 
 function addHtml(member, teamName) {
     return new Promise(function(resolve, reject) {
-        const name = member.name;
-        const role = member.role;
-        const id = member.id;
-        const email = member.email;
-        const picture = member.profilePicture;
+        const name = member.getName();
+        const role = member.getRole();
+        const id = member.getId();
+        const email = member.getEmail();
+        const picture = member.getPic();
         let data = "";
         if (role === "Engineer") {
-            const github = member.github;
+            const github = member.getGithub();
             data = `
             <div class="card profile">
               <div class="propic card-image waves-effect waves-block waves-light">
@@ -197,7 +196,7 @@ function addHtml(member, teamName) {
               </div>
             </div>`;
         } else if (role === "Intern") {
-            const school = member.school;
+            const school = member.getSchool();
             data = ` <div class="card profile">
             <div class=" propic card-image waves-effect waves-block waves-light">
               <img class="activator" src="${picture}">
@@ -217,7 +216,7 @@ function addHtml(member, teamName) {
             </div>
           </div>`;
         } else {
-            const officePhone = member.officeNumber;
+            const officePhone = member.getOfficeNumber();
             console.log('officePhone=', officePhone)
             data = `  <div class="card profile">
             <div class="propic card-image waves-effect waves-block waves-light">
