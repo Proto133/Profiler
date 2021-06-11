@@ -9,19 +9,15 @@ describe("Manager", () => {
     it("Can set name via constructor arguments", () => {
         const name = "Matt";
         const pic = ""
-        const role = "Manager"
         const id = "123"
         const email = "matt@example.com"
         const phone = "18005555555"
-        const e = new Manager(pic, role, name, id, email, phone);
+        const e = new Manager(pic, name, id, email, phone);
         expect(e.name).toBe("Matt");
-        expect(e.role).toBe("Manager")
+        expect(e.getRole()).toBe("Manager")
 
         //Tests Managers Number is storing.
         expect(e.officeNumber).toBe(phone);
-
-
-        expect(e.profilePicture).toBe("https://icedrive.net/0/aaZPbVxMPC")
     });
 
     it("Tests That Empty String is returned as placeholder URL", () => {
@@ -33,6 +29,6 @@ describe("Manager", () => {
         const phone = "18005555555"
         const e = new Manager(pic, role, name, id, email, phone);
         //Tests That Empty String is returned as placeholder URL
-        expect(e.profilePicture).toBe("https://icedrive.net/0/aaZPbVxMPC")
+        expect(e.profilePicture).toBe("https://icecube-us-846.icedrive.io/thumbnail?p=TsjPQlGjhy84SSe17FBre0VCoWQdFP46xr0Skmf7Vakb0w41HnNdNmeEwWnfUWq3k7%2FFrQahefqY0UeOm2cDMTIiH3slMDg%2BMAEK85yc04JkUL86CcdpC7OzXbaKu%2BCK&w=1280&h=1280&m=cropped")
     });
 })

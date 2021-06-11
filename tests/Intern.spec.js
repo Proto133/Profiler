@@ -13,10 +13,10 @@ describe("Intern", () => {
         const id = "123"
         const email = "matt@example.com"
         const school = "Northwestern"
-        const e = new Intern(pic, role, name, id, email, school);
+        const e = new Intern(pic, name, id, email, school);
         // console.log(e)
         expect(e.name).toBe("Matt");
-        expect(e.role).toBe("Intern");
+        expect(e.getRole()).toBe("Intern");
         expect(e.school).toBe("Northwestern");
 
     });

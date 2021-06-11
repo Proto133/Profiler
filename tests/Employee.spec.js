@@ -9,7 +9,6 @@ describe("Employee", () => {
 
     it("Can set name via correlated constructor arguments", () => {
         const pic = "www.example.com";
-        const role = "Employee"
         const name = "John Doe"
         const e = new Employee(pic, name)
         expect(e.name).toBe("John Doe");
