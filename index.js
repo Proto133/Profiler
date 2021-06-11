@@ -2,6 +2,7 @@
 const inquirer = require('inquirer');
 const fs = require('fs');
 const path = require('path');
+const validator = require('email-validator')
 
 //link local JS
 const Employee = require('./lib/Employee')
@@ -80,33 +81,53 @@ function addMember(teamName) {
             {
                 type: 'input',
                 message: "Enter team member's email address:",
-                name: "email"
+                name: "email",
+                validate: async function(email) {
+                    valid = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)
+
+                    if (valid) {
+                        return true;
+                    } else {
+                        console.log(".  Please enter a valid email")
+                        return false;
+                    }
+                }
             }
         ])
         .then(function({ profilePicture, name, role, id, email }) {
             let roleInfo = "";
             if (role === "Engineer") {
-                roleInfo = "GitHub username";
+                roleInfo = "GitHub username:";
             } else if (role === "Intern") {
-                roleInfo = "school name";
+                roleInfo = "school name:";
             } else {
-                roleInfo = "office phone number";
+                roleInfo = "office phone number:";
             }
-            inquirer.prompt([{
-                        message: `Enter team member's ${roleInfo}`,
-                        name: "roleInfo"
-                    },
-                    {
-                        type: "list",
-                        message: "Would you like to add more team members?",
-                        choices: [
-                            "yes",
-                            "no"
-                        ],
-                        name: "moreMembers"
+            if (roleInfo === "office phone number:") {
+                inquirer.prompt([{
+                    type: 'input',
+                    message: `Enter team member's ${roleInfo}`,
+                    name: "roleInfo",
+                    validate: async function(roleInfo) {
+                        valid = /^[0-9]*$/.test(roleInfo)
+
+                        if (valid) {
+                            return true;
+                        } else {
+                            console.log(".  Please enter a valid phone number")
+                            return false;
+                        }
                     }
-                ])
-                .then(function({ roleInfo, moreMembers }) {
+
+                }, {
+                    type: "list",
+                    message: "Would you like to add more team members?",
+                    choices: [
+                        "yes",
+                        "no"
+                    ],
+                    name: "moreMembers"
+                }]).then(function({ roleInfo, moreMembers }) {
                     let newMember;
                     if (role === "Engineer") {
                         newMember = new Engineer(profilePicture, name, id, email, roleInfo);
@@ -127,9 +148,46 @@ function addMember(teamName) {
                         });
 
                 });
-        });
 
+            } else {
+                inquirer.prompt([{
+                        message: `Enter team member's ${roleInfo}`,
+                        name: "roleInfo"
+                    },
+                    {
+                        type: "list",
+                        message: "Would you like to add more team members?",
+                        choices: [
+                            "yes",
+                            "no"
+                        ],
+                        name: "moreMembers"
+                    }
+                ]).then(function({ roleInfo, moreMembers }) {
+                    let newMember;
+                    if (role === "Engineer") {
+                        newMember = new Engineer(profilePicture, name, id, email, roleInfo);
+                    } else if (role === "Intern") {
+                        newMember = new Intern(profilePicture, name, id, email, roleInfo);
+                    } else {
+                        newMember = new Manager(profilePicture, name, id, email, roleInfo);
+                    }
+                    employees.push(newMember);
+                    console.log(newMember)
+                    addHtml(newMember, teamName)
+                        .then(function() {
+                            if (moreMembers === "yes") {
+                                addMember(teamNameGlobal);
+                            } else {
+                                finishHtml();
+                            }
+                        });
+
+                });
+            }
+        })
 }
+
 
 function startHtml(teamName) {
     const html = `<!DOCTYPE html>
