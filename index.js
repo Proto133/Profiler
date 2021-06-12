@@ -2,7 +2,7 @@
 const inquirer = require('inquirer');
 const fs = require('fs');
 const path = require('path');
-const validator = require('email-validator')
+
 
 //link local JS
 const Employee = require('./lib/Employee')
