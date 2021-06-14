@@ -20,7 +20,7 @@ function init() {
 }
 
 function mkOutput() {
-    fs.mkdir(path.join(process.cwd(), 'output'), (err) => {
+    fs.mkdir(path.join(process.cwd(), 'team_profile'), (err) => {
         if (err) {
             return err.message
         }
@@ -137,7 +137,6 @@ function addMember(teamName) {
                         newMember = new Manager(profilePicture, name, id, email, roleInfo);
                     }
                     employees.push(newMember);
-                    console.log(newMember)
                     addHtml(newMember, teamName)
                         .then(function() {
                             if (moreMembers === "yes") {
@@ -173,7 +172,6 @@ function addMember(teamName) {
                         newMember = new Manager(profilePicture, name, id, email, roleInfo);
                     }
                     employees.push(newMember);
-                    console.log(newMember)
                     addHtml(newMember, teamName)
                         .then(function() {
                             if (moreMembers === "yes") {
@@ -216,7 +214,7 @@ function startHtml(teamName) {
     </header>
     <main>`
 
-    fs.writeFile("./output/team.html", html, function(err) {
+    fs.writeFile("./team_profile/team.html", html, function(err) {
         if (err) {
             console.log(err);
         }
@@ -275,7 +273,6 @@ function addHtml(member, teamName) {
           </div>`;
         } else {
             const officePhone = member.getOfficeNumber();
-            console.log('officePhone=', officePhone)
             data = `  <div class="card profile">
             <div class="propic card-image waves-effect waves-block waves-light">
               <img class="activator" src="${picture}">
@@ -296,7 +293,7 @@ function addHtml(member, teamName) {
           </div> `
         }
         console.log("adding team member");
-        fs.appendFile("./output/team.html", data, function(err) {
+        fs.appendFile("./team_profile/team.html", data, function(err) {
             if (err) {
                 return reject(err);
             };
@@ -310,12 +307,12 @@ function finishHtml() {
 </body>
 </html>`;
 
-    fs.appendFile("./output/team.html", html, function(err) {
+    fs.appendFile("./team_profile/team.html", html, function(err) {
         if (err) {
             console.log(err);
         };
     });
-    console.log("end");
+    console.log("Your New Team Profile has Been Created in the 'team_profile/team.html' file");
 }
 
 init();
