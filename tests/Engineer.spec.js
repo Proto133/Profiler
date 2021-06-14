@@ -11,7 +11,6 @@ describe("Engineer", () => {
         const name = "Alice";
         const pic = "http://example.com"
         const e = new Engineer(pic, name);
-        console.log(e.getRole())
         expect(e.name).toBe("Alice");
         expect(e.getRole()).toBe("Engineer");
     });
